@@ -9,7 +9,10 @@
     "content_scripts": [
       {
         "matches": ["*://*.jobr.mobi/*"],
-        "js": ["jobr-enhancement-suite.js"]
+        "js": [
+            "jquery-3.6.0.slim.min.js",
+            "jobr-enhancement-suite.js"
+        ]
       }
     ]
   
