@@ -1,11 +1,3 @@
-// ==UserScript==
-// @name     Jobr
-// @version  1
-// @grant    none
-// @include  https://ferguson.jobr.mobi/*
-// @require  https://code.jquery.com/jquery-3.5.1.min.js
-// ==/UserScript==
-
 // add your common job codes in here
 var quick_list = [
     { job: 'FERG006', duration: '0.5', display_name: 'Meeting', task: '422' },
@@ -73,182 +65,187 @@ jQuery(document).ready(function() {
     jQuery('body').on('click', '#prefs b', showJobs);
     
     const styleEl = document.createElement('style');
-    styleEl.innerHTML = /* html */`
-<style>
-/* Enable this if you have auto-login */
-#gobutton {
-/*	display: none; */
-}
+    styleEl.innerHTML = '<style>' + css`
+        /* Enable this if you have auto-login */
+        #gobutton {
+        /*	display: none; */
+        }
 
-.mnwrp, #mainwrap {
-    width: 1280px;
-}
+        .mnwrp, #mainwrap {
+            width: 1280px;
+        }
 
-.infomain #jobslisting,
-.infomain #tasklisting {
-        height: 485px;
-        overflow-y: scroll;
-        background-color: white;
-        width: 345px;
-        display: block !important;
-        visibility: visible;
-        opacity: 1;
-        float: left;
-}
-
-
-.infomain #jobslisting .wrp {
-        width:100% !important;
-}
-
-.infomain #tasklisting {
-        width: 335px !important;
-}
-
-#popup_window {
-	visibility: hidden;
-	display: none;
-	margin-left: -9999em;
-}
+        .infomain #jobslisting,
+        .infomain #tasklisting {
+                height: 485px;
+                overflow-y: scroll;
+                background-color: white;
+                width: 345px;
+                display: block;
+                visibility: visible;
+                opacity: 1;
+                float: left;
+        }
 
 
-#timecardtitle, #manual-links {
-	padding: 1rem;
-	cursor:pointer;
-	line-height: 1.1;
-	white-space: normal;
-}
+        .infomain #jobslisting .wrp {
+                width:100%;
+        }
 
-#rightlr {
-        width: 480px;
-}
+        .infomain #tasklisting {
+                width: 335px;
+        }
 
-.calwrap {
-        width: 175px;
-    float: left;
-}
-
-#rcontent {
-        clear: none !important;
-}
-
-.timedivs {
-        float: left;
-    clear: right;
-    margin-top: 0;
-    margin-bottom: 10px;
-    width: 275px;
-}
-
-#addtime {
-    margin-top: -60px !important;
-}
-
-#addtime.timedivs textarea#COST_NOTE {
-    height: 40px;
-    width: 200px;
-}
-
-#timecard {
-        clear: both;
-    width: 460px;
-    height: 360px;
-}
-
-#timentries {
-    height: 270px;
-    overflow-y: scroll;
-}
-
-.htot {
-        font-size: 1.5em;
-}
-
-.htot a {
-        display: none;
-}
-
-.timenthdr::after {
-        content: 'Description:';
-        font-weight: bold;
-        display: block;
-        float: left;
-        margin-left: 15px;
-}
-
-.time_ent {
-        border-top: none !important;
-        border-bottom: 1px dotted #BABABA !important;
-        background: transparent !important;
-}
-
-.time_ent:nth-child(even) {
-        background: #EEE !important;
-}
-
-.time_ent:not(.imgbtn) {
-        display: none !important;
-}
-
-.time_ent::after {
-        display: block;
-        float: right;
-    text-align: left;
-    width: 262px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    position: static;
-    padding: 0;
-    margin: 0;
-    background: transparent;
-    border-style: none;
-    box-shadow: none;
-    white-space: nowrap !important;
-    cursor: pointer;
-    line-height: normal;
-    visibility: visible;
-}
-
-.time_ent.edt::after {
-        font-weight: bold !important;
-}
+        #popup_window {
+            visibility: hidden;
+            display: none;
+            margin-left: -9999em;
+        }
 
 
-#COST_JOB_NUM:focus,
-#COST_HOURS:focus,
-#COST_TASK:focus {
-        background-color: #FFEEFF;
-}
+        #timecardtitle, #manual-links {
+            padding: 1rem;
+            cursor:pointer;
+            line-height: 1.1;
+            white-space: normal;
+        }
 
-.jline:hover {
-        background-color: #FFEEFF;
+        #rightlr {
+                width: 480px;
+        }
 
-}
+        .calwrap {
+                width: 175px;
+            float: left;
+        }
 
-#prefs b {
-        display: inline-block;
-        border: 1px solid #440044;
-        cursor: pointer;
-}
+        #rcontent {
+                clear: none;
+        }
 
-.dayselected {
-       background-color: #ffaaaa !important;
-}
+        .timedivs {
+                float: left;
+            clear: right;
+            margin-top: 0;
+            margin-bottom: 10px;
+            width: 275px;
+        }
 
-.but_ton.quick {
-	text-decoration: none;
-	color: black;
-	margin-bottom: 4px;
-	margin-left: 4px;
-	font-size: .9em;
-	padding: 2px 4px;
-	display: inline-block;
-	line-height: 1.5;
-}
+        #addtime {
+            margin-top: -60px !important;
+        }
 
-.but_ton.quick:hover {
-	background-color: white;
-}
-</style>`
+        #addtime.timedivs textarea#COST_NOTE {
+            height: 40px;
+            width: 200px;
+        }
+
+        #timecard {
+                clear: both;
+            width: 460px;
+            height: 360px;
+        }
+
+        #timentries {
+            height: 270px;
+            overflow-y: scroll;
+        }
+
+        .htot {
+                font-size: 1.5em;
+        }
+
+        .htot a {
+                display: none;
+        }
+
+        .timenthdr::after {
+                content: 'Description:';
+                font-weight: bold;
+                display: block;
+                float: left;
+                margin-left: 15px;
+        }
+
+        .time_ent {
+                border-top: none;
+                border-bottom: 1px dotted #BABABA;
+                background: transparent;
+        }
+
+        .time_ent:nth-child(even) {
+                background: #EEE;
+        }
+
+        .time_ent:not(.imgbtn) {
+                display: none;
+        }
+
+        .time_ent::after {
+                display: block;
+                float: right;
+            text-align: left;
+            width: 262px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: static;
+            padding: 0;
+            margin: 0;
+            background: transparent;
+            border-style: none;
+            box-shadow: none;
+            white-space: nowrap;
+            cursor: pointer;
+            line-height: normal;
+            visibility: visible;
+        }
+
+        .time_ent.edt::after {
+                font-weight: bold;
+        }
+
+
+        #COST_JOB_NUM:focus,
+        #COST_HOURS:focus,
+        #COST_TASK:focus {
+                background-color: #FFEEFF;
+        }
+
+        .jline:hover {
+                background-color: #FFEEFF;
+
+        }
+
+        #prefs b {
+                display: inline-block;
+                border: 1px solid #440044;
+                cursor: pointer;
+        }
+
+        .dayselected {
+            background-color: #ffaaaa;
+        }
+
+        .but_ton.quick {
+            text-decoration: none;
+            color: black;
+            margin-bottom: 4px;
+            margin-left: 4px;
+            font-size: .9em;
+            padding: 2px 4px;
+            display: inline-block;
+            line-height: 1.5;
+        }
+
+        .but_ton.quick:hover {
+            background-color: white;
+        }
+    ` + '</style>';
+
     document.body.append(styleEl);
 });
+
+function css(strings, ..._values) {
+    // MAYBE TODO: interpolate values, if we ever need values in our CSS
+    return strings.join().replace(/(?<!!important\s*);/g, ' !important;');
+}
