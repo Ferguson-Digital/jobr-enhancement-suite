@@ -43,7 +43,12 @@ function showJobs() {
 function selectJob(jobNum) {
     jQuery('#COST_TASK').val('422');
     jQuery('#COST_JOB_NUM').val(jobNum);
-    jQuery('#COST_HOURS').val(.5).focus();
+    /**
+     * Took out `.val(.5)` from the line below because
+     *  - More often than not it needs deleted and replaced with the correct time anyway
+     *  - When editing an existing entry, it overwrites the time that was already entered
+     */
+    jQuery('#COST_HOURS').focus();
     jQuery('#timg').click();
 }
 
