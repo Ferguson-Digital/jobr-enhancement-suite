@@ -61,13 +61,22 @@ function manual() {
     return false;
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
     new MutationObserver(function (mutations) {
         setTimeout( showJobs, 100 );
     }).observe(jQuery("#main")[0], { childList: true });
 
     // added back in because I'm not as confident as James that we don't need a master reset back door. ;)
     jQuery('body').on('click', '#prefs b', showJobs);
+    
+    // Auto-login if the login fields are already autofilled
+    setTimeout(function () {
+        const login_button = $('#gobutton');
+        if (login_button && $("#initials").val() && $("#paswd").val()) {
+            login_button.trigger("click");
+            login_button.hide();
+        }
+    }, 100 );
     
     const styleEl = document.createElement('style');
     styleEl.innerHTML = '<style>' + css`
