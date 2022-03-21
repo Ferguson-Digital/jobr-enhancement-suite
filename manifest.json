@@ -1,7 +1,7 @@
 {
 
     "manifest_version": 2,
-    "name": "Jobr Enhancement Suite",
+    "name": "Jobr Plus",
     "version": "1.0.0",
   
     "description": "Improves the UX of the Jobr interface for time entry.",
@@ -11,7 +11,7 @@
         "matches": ["*://*.jobr.mobi/*"],
         "js": [
             "jquery-3.6.0.slim.min.js",
-            "jobr-enhancement-suite.js"
+            "jobr-plus.js"
         ]
       }
     ]
