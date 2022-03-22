@@ -38,7 +38,7 @@ export default ({browserTarget, version}) => ({
         default_popup: "popup/index.html"
     } : undefined,
     
-    browser_specific_settings: {
+    browser_specific_settings: browserTarget === 'chrome' ? undefined : {
         gecko: {
             id: "{25383326-edd8-4cd0-9fa2-491eced1680e}",
             strict_min_version: "42.0"
