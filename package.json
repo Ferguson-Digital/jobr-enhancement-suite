@@ -5,6 +5,12 @@
   "author": "Ferguson Digital",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node ./bin/build.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.14.27"
+  },
+  "dependencies": {
+    "jquery": "^3.6.0"
   }
 }

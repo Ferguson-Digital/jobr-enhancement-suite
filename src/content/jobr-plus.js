@@ -1,3 +1,5 @@
+import jQuery from 'jquery/dist/jquery.slim.js';
+
 // add your common job codes in here
 var quick_list = [
     { job: 'FERG133', duration: '1', display_name: 'Meeting', task: '453' },
@@ -63,7 +65,7 @@ function manual() {
     return false;
 }
 
-jQuery(document).ready(function($) {
+jQuery(function($) {
     new MutationObserver(function (mutations) {
         setTimeout( showJobs, 100 );
     }).observe(jQuery("#main")[0], { childList: true });
