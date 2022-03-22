@@ -5,6 +5,7 @@
   "author": "Ferguson Digital",
   "type": "module",
   "scripts": {
+    "dev": "node ./bin/build.js --watch",
     "build": "node ./bin/build.js"
   },
   "devDependencies": {

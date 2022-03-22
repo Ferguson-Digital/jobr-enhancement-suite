@@ -3,6 +3,8 @@ import fs from 'fs/promises';
 // import pkg from '../package.json';
 import createManifest from '../manifest.js';
 
+const watch = process.argv.includes('--watch');
+
 const BROWSER_TARGETS = ['chrome', 'firefox'];
 const VERSION = process.env.npm_package_version;
 
@@ -14,6 +16,7 @@ async function build(browserTarget) {
             'src/content/jobr-plus.js'
         ],
         bundle: true,
+        watch,
         outdir,
         outbase: 'src'
     });
