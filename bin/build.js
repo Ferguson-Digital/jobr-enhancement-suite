@@ -27,6 +27,7 @@ async function build(browserTarget) {
     });
     
     await fs.writeFile(`./${outdir}/manifest.json`, JSON.stringify(manifest));
+    await fs.cp('icons', outdir + '/icons', { recursive: true });
 }
 
 await Promise.all(

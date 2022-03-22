@@ -3,6 +3,10 @@ export default ({browserTarget, version}) => ({
     name: "Jobr Plus",
     version,
     description: "Improves the UX of the Jobr interface for time entry.",
+    icons: {
+        "48": "icons/icon-48.png",
+        "96": "icons/icon-96.png"
+    },
   
     content_scripts: [
         {
