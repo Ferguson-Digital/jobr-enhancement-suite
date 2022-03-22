@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node ./bin/build.js --watch",
     "build": "node ./bin/build.js",
-    "package": "cd dist/chrome && zip -vr ../jobr-plus-chrome.zip * && cd ../firefox && zip -vr ../jobr-plus-firefox.zip *",
+    "package": "rm -f dist/jobr-plus-chrome.zip dist/jobr-plus-firefox.zip && cd dist/chrome && zip -vr ../jobr-plus-chrome.zip * && cd ../firefox && zip -vr ../jobr-plus-firefox.zip *",
     "dev:firefox": "npm run build && cd dist/firefox && web-ext run --start-url ferguson.jobr.mobi"
   },
   "devDependencies": {

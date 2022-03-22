@@ -10,6 +10,7 @@ const VERSION = process.env.npm_package_version;
 
 async function build(browserTarget) {
     const outdir = 'dist/' + browserTarget;
+    fs.rm(outdir, {recursive: true, force: true});
     
     await esbuild.build({
         entryPoints: [
