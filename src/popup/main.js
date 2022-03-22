@@ -1,1 +1,5 @@
-console.log('hello world');
+import App from './App.svelte';
+
+new App({
+    target: document.getElementById('app')
+});

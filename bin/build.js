@@ -1,6 +1,6 @@
-import esbuild from 'esbuild';
 import fs from 'fs/promises';
-// import pkg from '../package.json';
+import esbuild from 'esbuild';
+import sveltePlugin from 'esbuild-svelte';
 import createManifest from '../manifest.js';
 
 const watch = process.argv.includes('--watch');
@@ -19,7 +19,8 @@ async function build(browserTarget) {
         bundle: true,
         watch,
         outdir,
-        outbase: 'src'
+        outbase: 'src',
+        plugins: [sveltePlugin()]
     });
     
     const manifest = createManifest({
