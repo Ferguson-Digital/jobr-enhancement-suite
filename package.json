@@ -6,11 +6,14 @@
   "type": "module",
   "scripts": {
     "dev": "node ./bin/build.js --watch",
-    "build": "node ./bin/build.js"
+    "build": "node ./bin/build.js",
+    "package": "cd dist/chrome && zip -vr ../jobr-plus-chrome.zip * && cd ../firefox && zip -vr ../jobr-plus-firefox.zip *",
+    "dev:firefox": "npm run build && cd dist/firefox && web-ext run --start-url ferguson.jobr.mobi"
   },
   "devDependencies": {
     "esbuild": "^0.14.27",
-    "esbuild-svelte": "^0.6.3"
+    "esbuild-svelte": "^0.6.3",
+    "web-ext": "^6.7.0"
   },
   "dependencies": {
     "jquery": "^3.6.0",

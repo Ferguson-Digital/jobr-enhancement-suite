@@ -52,8 +52,11 @@
 
 <form on:submit|preventDefault={save}>
     <textarea bind:value={shortcutsJson}></textarea>
-    <button disabled={!isValid} type="submit">Save</button>
-    <button type="button" on:click={cancel}>Cancel</button>
+    
+    <div>
+        <button disabled={!isValid} type="submit">Save</button>
+        <button type="button" on:click={cancel}>Cancel</button>
+    </div>
 </form>
 
 <style>

@@ -12,9 +12,9 @@ let shortcuts;
 
 async function initShortcuts() {
     browser.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName === 'sync' && typeof changes['shortcuts'] !== 'undefined') {
+        if (areaName === 'sync' && !!changes['shortcuts']) {
             console.log('shortcuts changed', changes);
-            shortcuts = changes['shortcuts'].newValue;
+            shortcuts = changes['shortcuts'].newValue || [];
             updateShortcutButtons();
         }
     });

@@ -24,7 +24,8 @@ export default ({browserTarget, version}) => ({
             "38": "icons/icon-38.png"
         },
         default_title: "Jobr Plus",
-        default_popup: "popup/index.html"
+        default_popup: "popup/index.html",
+        show_matches: ["*://*.jobr.mobi/*"]
     },
     
     action: browserTarget === 'chrome' ? {
@@ -35,6 +36,13 @@ export default ({browserTarget, version}) => ({
         },
         default_title: "Jobr Plus",
         default_popup: "popup/index.html"
-    } : undefined
+    } : undefined,
+    
+    browser_specific_settings: {
+        gecko: {
+            id: "{25383326-edd8-4cd0-9fa2-491eced1680e}",
+            strict_min_version: "42.0"
+        }
+    }
 });
   
