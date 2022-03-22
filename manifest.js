@@ -28,8 +28,9 @@ export default ({browserTarget, version}) => ({
     
     action: browserTarget === 'chrome' ? {
         default_icon: {
-            "19": "icons/icon-19.png",
-            "38": "icons/icon-38.png"
+            "16": "icons/icon-16.png",
+            "24": "icons/icon-24.png",
+            "32": "icons/icon-32.png"
         },
         default_title: "Jobr Plus",
         default_popup: "popup/index.html"
