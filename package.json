@@ -1,0 +1,10 @@
+{
+  "name": "jobr-plus",
+  "version": "1.0.0",
+  "description": "Improves the UX of the Jobr interface for time entry.",
+  "author": "Ferguson Digital",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
