@@ -1,17 +1,42 @@
 import jQuery from 'jquery/dist/jquery.slim.js';
+import browser from 'webextension-polyfill';
 
-// add your common job codes in here
-var quick_list = [
+const defaultShortcuts = [
     { job: 'FERG133', duration: '1', display_name: 'Meeting', task: '453' },
     { job: 'FERG129', duration: '8.0', display_name: 'Vacation', task: '600' },
     { job: 'FERG130', duration: '8.0', display_name: 'Sick', task: '601' },
     { job: 'FERG131', duration: '8.0', display_name: 'Closed', task: '602' },
 ];
 
-function updateTextLinks() {
+let shortcuts;
+
+async function initShortcuts() {
+    browser.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName === 'sync' && typeof changes['shortcuts'] !== 'undefined') {
+            console.log('shortcuts changed', changes);
+            shortcuts = changes['shortcuts'].newValue;
+            updateShortcutButtons();
+        }
+    });
+    
+    const results = await browser.storage.sync.get('shortcuts');
+    shortcuts = results?.shortcuts ?? defaultShortcuts;
+    updateShortcutButtons();
+    
+    if (!results?.shortcuts) {
+        console.log('setting default shortcuts');
+        browser.storage.sync.set({shortcuts});
+    }
+}
+
+initShortcuts();
+
+function updateShortcutButtons() {
+    if (!isShowingJobs) return;
+    
     var quick_text = '<div id="manual-links">';
-    for (var i = 0; i < quick_list.length; i++) {
-        var e = quick_list[i];
+    for (var i = 0; i < shortcuts.length; i++) {
+        var e = shortcuts[i];
         quick_text += '<a href="#" data-code="' + e.job + '"';
         if (e.duration) {
             quick_text += ' data-duration="' + e.duration + '"';
@@ -28,6 +53,8 @@ function updateTextLinks() {
     jQuery('body').css( { 'cursor' : 'pointer' } );
 }
 
+let isShowingJobs = false;
+
 function showJobs() {
     jQuery(".infomain").html(jQuery('#popup_window').html());
     jQuery('.infomain').on('dblclick', '.jline', function(e) {
@@ -40,7 +67,8 @@ function showJobs() {
         return false;
     });
 
-    updateTextLinks();
+    isShowingJobs = true;
+    updateShortcutButtons();
     return false;
 }
 

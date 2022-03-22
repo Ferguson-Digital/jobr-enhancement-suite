@@ -19,6 +19,7 @@
         }
         
         browser.storage.sync.set({shortcuts: shortcutsParsed});
+        window.close();
     }
     
     function cancel() {
