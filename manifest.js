@@ -7,6 +7,7 @@ export default ({browserTarget, version}) => ({
         "48": "icons/icon-48.png",
         "96": "icons/icon-96.png"
     },
+    permissions: ['storage'],
   
     content_scripts: [
         {
