@@ -13,7 +13,8 @@ async function build(browserTarget) {
     
     await esbuild.build({
         entryPoints: [
-            'src/content/jobr-plus.js'
+            'src/content/jobr-plus.js',
+            'src/popup/main.js'
         ],
         bundle: true,
         watch,
@@ -28,6 +29,7 @@ async function build(browserTarget) {
     
     await fs.writeFile(`./${outdir}/manifest.json`, JSON.stringify(manifest));
     await fs.cp('icons', outdir + '/icons', { recursive: true });
+    await fs.copyFile('src/popup/index.html', outdir + '/popup/index.html');
 }
 
 await Promise.all(

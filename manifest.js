@@ -15,6 +15,24 @@ export default ({browserTarget, version}) => ({
                 "content/jobr-plus.js"
             ]
         }
-    ]
+    ],
+    
+    page_action: browserTarget === 'chrome' ? undefined : {
+        default_icon: {
+            "19": "icons/icon-19.png",
+            "38": "icons/icon-38.png"
+        },
+        default_title: "Jobr Plus",
+        default_popup: "popup/index.html"
+    },
+    
+    action: browserTarget === 'chrome' ? {
+        default_icon: {
+            "19": "icons/icon-19.png",
+            "38": "icons/icon-38.png"
+        },
+        default_title: "Jobr Plus",
+        default_popup: "popup/index.html"
+    } : undefined
 });
   
