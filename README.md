@@ -2,6 +2,9 @@
 
 A Chrome and Firefox extension to make Jobr usable.
 
+[Jobr Plus for Chrome](https://chrome.google.com/webstore/detail/jobr-plus/fefdkpcfagpbfbdckpllofaomafhpnak?hl=en&authuser=0)
+[Jobr Plus for Firefox](https://addons.mozilla.org/en-US/firefox/addon/jobr-plus/)
+
 ## Development
 
 1. Make sure you've done `npm i` to install packages
