@@ -41,7 +41,7 @@ function updateShortcutButtons() {
         if (e.duration) {
             quick_text += ' data-duration="' + e.duration + '"';
         }
-        quick_text += ' data-task="' + (e.task ? e.task : '422') + '"';
+        quick_text += ' data-task="' + (e.task ? e.task : '') + '"';
         quick_text += ' class="manual quick but_ton">' + (e.display_name ? e.display_name : e.job) + '</a>';
     }
     quick_text += '</div>';
@@ -73,7 +73,7 @@ function showJobs() {
 }
 
 function selectJob(jobNum) {
-    jQuery('#COST_TASK').val('422');
+    // jQuery('#COST_TASK').val('422');
     jQuery('#COST_JOB_NUM').val(jobNum);
     /**
      * Took out `.val(.5)` from the line below because
@@ -85,7 +85,7 @@ function selectJob(jobNum) {
 }
 
 function manual() {
-    jQuery('#COST_TASK').val(jQuery( this ).data( 'task' ));
+    if (jQuery( this ).data( 'task' )) jQuery('#COST_TASK').val(jQuery( this ).data( 'task' ));
     jQuery('#COST_JOB_NUM').val(jQuery( this ).data( 'code' ));
     jQuery('#COST_HOURS').val(jQuery( this ).data( 'duration' ));
     jQuery('#COST_NOTE' ).focus();
