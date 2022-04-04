@@ -1,12 +1,7 @@
 <script>
     import browser from 'webextension-polyfill';
     
-    let shortcutsJson/*  = JSON.stringify([
-        { job: 'FERG133', duration: '1', display_name: 'Meeting', task: '453' },
-        { job: 'FERG129', duration: '8.0', display_name: 'Vacation', task: '600' },
-        { job: 'FERG130', duration: '8.0', display_name: 'Sick', task: '601' },
-        { job: 'FERG131', duration: '8.0', display_name: 'Closed', task: '602' },
-    ], null, 2); */
+    let shortcutsJson;
     
     let isValid = false;
     let shortcutsParsed;
@@ -23,11 +18,10 @@
     }
     
     function cancel() {
-        // shortcutsJson = JSON.stringify(shortcutsSaved, null, 2);
-        // browser.storage.sync.clear();
         window.close();
     }
     
+    // This block happens reactively, so that it will validate JSON on any changes to the shortcutsJson string
     $: try {
         shortcutsParsed = JSON.parse(shortcutsJson);
         isValid = true;
