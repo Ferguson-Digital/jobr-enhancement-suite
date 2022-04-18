@@ -123,23 +123,23 @@ jQuery(function($) {
 
         .infomain #jobslisting,
         .infomain #tasklisting {
-                height: 485px;
-                overflow-y: scroll;
-                background-color: white;
-                width: 345px;
-                display: block;
-                visibility: visible;
-                opacity: 1;
-                float: left;
+            height: 485px;
+            overflow-y: scroll;
+            background-color: white;
+            width: 345px;
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            float: left;
         }
 
 
         .infomain #jobslisting .wrp {
-                width:100%;
+            width:100%;
         }
 
         .infomain #tasklisting {
-                width: 335px;
+            width: 335px;
         }
 
         #popup_window {
@@ -157,20 +157,20 @@ jQuery(function($) {
         }
 
         #rightlr {
-                width: 480px;
+            width: 480px;
         }
 
         .calwrap {
-                width: 175px;
+            width: 175px;
             float: left;
         }
 
         #rcontent {
-                clear: none;
+            clear: none;
         }
 
         .timedivs {
-                float: left;
+            float: left;
             clear: right;
             margin-top: 0;
             margin-bottom: 10px;
@@ -187,7 +187,7 @@ jQuery(function($) {
         }
 
         #timecard {
-                clear: both;
+            clear: both;
             width: 460px;
             height: 360px;
         }
@@ -198,38 +198,38 @@ jQuery(function($) {
         }
 
         .htot {
-                font-size: 1.5em;
+            font-size: 1.5em;
         }
 
         .htot a {
-                display: none;
+            display: none;
         }
 
         .timenthdr::after {
-                content: 'Description:';
-                font-weight: bold;
-                display: block;
-                float: left;
-                margin-left: 15px;
+            content: 'Description:';
+            font-weight: bold;
+            display: block;
+            float: left;
+            margin-left: 15px;
         }
 
         .time_ent {
-                border-top: none;
-                border-bottom: 1px dotted #BABABA;
-                background: transparent;
+            border-top: none;
+            border-bottom: 1px dotted #BABABA;
+            background: transparent;
         }
 
         .time_ent:nth-child(even) {
-                background: #EEE;
+            background: #EEE;
         }
 
         .time_ent:not(.imgbtn) {
-                display: none;
+            display: none;
         }
 
         .time_ent::after {
-                display: block;
-                float: right;
+            display: block;
+            float: right;
             text-align: left;
             width: 262px;
             overflow: hidden;
@@ -247,25 +247,25 @@ jQuery(function($) {
         }
 
         .time_ent.edt::after {
-                font-weight: bold;
+            font-weight: bold;
         }
 
 
         #COST_JOB_NUM:focus,
         #COST_HOURS:focus,
         #COST_TASK:focus {
-                background-color: #FFEEFF;
+            background-color: #FFEEFF;
         }
 
         .jline:hover {
-                background-color: #FFEEFF;
+            background-color: #FFEEFF;
 
         }
 
         #prefs b {
-                display: inline-block;
-                border: 1px solid #440044;
-                cursor: pointer;
+            display: inline-block;
+            border: 1px solid #440044;
+            cursor: pointer;
         }
 
         .dayselected {

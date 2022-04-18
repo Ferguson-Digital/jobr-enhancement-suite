@@ -22,6 +22,7 @@ Any other file changes will require you to terminate the dev script and restart 
 3. Enable "Developer mode" in the top right corner
 4. Click the "Load unpacked" button, and select the `./dist/chrome/` folder
 5. Navigate to https://ferguson.jobr.mobi
+6. Click the reload icon on Jobr Plus in the Extensions page when you have changes
 
 ### Loading the Add-on in Firefox
 #### Using web-ext
