@@ -10,7 +10,7 @@ const defaultSettings = { shortcuts :
     ],
     login: {
         u : '', // username
-        p : '' // password
+        p : ''  // password
     },
     commonTasks : [
         { id: '453', name: 'Meeting' },
@@ -117,14 +117,20 @@ jQuery(function($) {
     // added back in because I'm not as confident as James that we don't need a master reset back door. ;)
     jQuery('body').on('click', '#prefs b', showJobs);
 
-    // Auto-login if the login fields are already autofilled
+    // Auto-login
     setTimeout(function () {
         const login_button = $('#gobutton');
+    	if (login_button && settings.login.u && settings.login.p) {
+        	login_button.hide();
+    		$("#initials").val(settings.login.u);
+    		$("#paswd").val(settings.login.p);
+    	}
         if (login_button && $("#initials").val() && $("#paswd").val()) {
-            login_button.trigger("click");
             login_button.hide();
+            login_button.trigger("click");
         }
     }, 100 );
+
 
     const styleEl = document.createElement('style');
     styleEl.innerHTML = '<style>' + css`

@@ -24,6 +24,7 @@
     // This block happens reactively, so that it will validate JSON on any changes to the settingsJson string
     $: try {
         settingsParsed = JSON.parse(settingsJson);
+        settingsJson = JSON.stringify(settingsParsed, null, 2);
         isValid = true;
     } catch (e) {
         settingsParsed = undefined;
