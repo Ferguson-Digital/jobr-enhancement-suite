@@ -1,42 +1,58 @@
 import jQuery from 'jquery/dist/jquery.slim.js';
 import browser from 'webextension-polyfill';
 
-const defaultShortcuts = [
-    { job: 'FERG133', duration: '1', display_name: 'Meeting', task: '453' },
-    { job: 'FERG129', duration: '8.0', display_name: 'Vacation', task: '600' },
-    { job: 'FERG130', duration: '8.0', display_name: 'Sick', task: '601' },
-    { job: 'FERG131', duration: '8.0', display_name: 'Closed', task: '602' },
-];
+const defaultSettings = { shortcuts :
+    [
+        { job: 'FERG133', duration: '1', display_name: 'Meeting', task: '453' },
+        { job: 'FERG129', duration: '8.0', display_name: 'Vacation', task: '600' },
+        { job: 'FERG130', duration: '8.0', display_name: 'Sick', task: '601' },
+        { job: 'FERG131', duration: '8.0', display_name: 'Closed', task: '602' },
+    ],
+    login: {
+        u : '', // username
+        p : '' // password
+    },
+    commonTasks : [
+        { id: '453', name: 'Meeting' },
+        { id: '442', name: 'FrontEnd' },
+        { id: '443', name: 'BackEnd' },
+        { id: '407', name: 'ProjMgmt' }
+    ],
+    defaultDuration : '.5'
+};
 
-let shortcuts;
+let settings;
 
-async function initShortcuts() {
+async function initSettings() {
     browser.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName === 'sync' && !!changes['shortcuts']) {
-            console.log('shortcuts changed', changes);
-            shortcuts = changes['shortcuts'].newValue || [];
+        if (areaName === 'sync' && !!changes['settings']) {
+            console.log('j-p.js: settings changed', changes);
+            settings = changes['settings'].newValue || [];
             updateShortcutButtons();
         }
     });
-    
-    const results = await browser.storage.sync.get('shortcuts');
-    shortcuts = results?.shortcuts ?? defaultShortcuts;
-    updateShortcutButtons();
-    
-    if (!results?.shortcuts) {
-        console.log('setting default shortcuts');
-        browser.storage.sync.set({shortcuts});
+
+    const results = await browser.storage.sync.get('settings');
+    settings = results?.settings ?? defaultSettings;
+    if (!results?.settings) {
+        console.log('setting default settings');
+        browser.storage.sync.set({settings});
     }
+
+    console.log( settings );
+    updateShortcutButtons();
 }
 
-initShortcuts();
+initSettings();
 
 function updateShortcutButtons() {
     if (!isShowingJobs) return;
-    
+
+console.log( "Buttons: ", settings.shortcuts );
+
     var quick_text = '<div id="manual-links">';
-    for (var i = 0; i < shortcuts.length; i++) {
-        var e = shortcuts[i];
+    for (var i = 0; i < settings.shortcuts.length; i++) {
+        var e = settings.shortcuts[i];
         quick_text += '<a href="#" data-code="' + e.job + '"';
         if (e.duration) {
             quick_text += ' data-duration="' + e.duration + '"';
@@ -100,7 +116,7 @@ jQuery(function($) {
 
     // added back in because I'm not as confident as James that we don't need a master reset back door. ;)
     jQuery('body').on('click', '#prefs b', showJobs);
-    
+
     // Auto-login if the login fields are already autofilled
     setTimeout(function () {
         const login_button = $('#gobutton');
@@ -109,7 +125,7 @@ jQuery(function($) {
             login_button.hide();
         }
     }, 100 );
-    
+
     const styleEl = document.createElement('style');
     styleEl.innerHTML = '<style>' + css`
         /* Enable this if you have auto-login */

@@ -11,7 +11,7 @@ const VERSION = process.env.npm_package_version;
 async function build(browserTarget) {
     const outdir = 'dist/' + browserTarget;
     fs.rm(outdir, {recursive: true, force: true});
-    
+
     await esbuild.build({
         entryPoints: [
             'src/content/jobr-plus.js',
@@ -23,12 +23,12 @@ async function build(browserTarget) {
         outbase: 'src',
         plugins: [sveltePlugin()]
     });
-    
+
     const manifest = createManifest({
         browserTarget,
         version: VERSION
     });
-    
+
     await fs.writeFile(`./${outdir}/manifest.json`, JSON.stringify(manifest));
     await fs.cp('icons', outdir + '/icons', { recursive: true });
     await fs.copyFile('src/popup/index.html', outdir + '/popup/index.html');
