@@ -179,11 +179,11 @@ jQuery( function ( $ ) {
 	// Auto-login
 	setTimeout( function () {
 		const login_button = $( '#gobutton' );
-		if ( login_button && settings.login.u && settings.login.p )
+		if ( login_button && settings?.login?.u && settings?.login?.p )
 		{
 			login_button.hide();
-			$( "#initials" ).val( settings.login.u );
-			$( "#paswd" ).val( settings.login.p );
+			$( "#initials" ).val( settings?.login?.u );
+			$( "#paswd" ).val( settings?.login?.p );
 		}
 		if ( login_button && $( "#initials" ).val() && $( "#paswd" ).val() )
 		{
