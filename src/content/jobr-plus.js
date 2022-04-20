@@ -19,29 +19,20 @@ const defaultSettings = {
 		'443': 'BackEnd',
 		'407': 'ProjMgmt'
 	},
-	defaultDuration: '.5',
-	defaultTask: '443'
+	defaultDuration: '',
+	defaultTask: ''
 };
 
 let settings;
 let useDefaultTask = true;
 
 async function initSettings() {
-	browser.storage.onChanged.addListener( ( changes, areaName ) => {
-		if ( areaName === 'sync' && !!changes['settings'] )
-		{
-			console.log( 'j-p.js: settings changed', changes );
-			settings = changes['settings'].newValue || [];
-			updateShortcutButtons();
-		}
-	} );
-
-	const results = await browser.storage.sync.get( 'settings' );
-	settings = results?.settings ?? defaultSettings;
-	if ( !results?.settings )
-	{
+	settings = await browser.storage.sync.get(null);
+	
+	if ( !settings || Object.keys(settings).length == 0 ) {
 		console.log( 'setting default settings' );
-		browser.storage.sync.set( { settings } );
+		settings = {...defaultSettings};
+		browser.storage.sync.set( {...defaultSettings} );
 	}
 
 	console.log( settings );
@@ -49,6 +40,14 @@ async function initSettings() {
 }
 
 initSettings();
+
+browser.storage.onChanged.addListener( ( changes, areaName ) => {
+	console.log({areaName});
+	if ( areaName === 'sync' ) {
+		console.log( 'j-p.js: settings changed', changes );
+		initSettings();
+	}
+} );
 
 function updateShortcutButtons() {
 	if ( !isShowingJobs ) return;
