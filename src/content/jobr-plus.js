@@ -24,7 +24,7 @@ const defaultSettings = {
 };
 
 let settings;
-let useDefaultTask = false;
+let useDefaultTask = true;
 
 async function initSettings() {
 	browser.storage.onChanged.addListener( ( changes, areaName ) => {
@@ -78,7 +78,7 @@ let isShowingJobs = false;
 
 function showJobs() {
 	jQuery( ".infomain" ).html( jQuery( '#popup_window' ).html() );
-	jQuery( '.infomain' ).on( 'click', '.jline', function ( e ) {
+	jQuery( '#jobslisting' ).on( 'click', '.jline', function ( e ) {
 		e.preventDefault();
 		console.log( 'click' );
 		console.log( jQuery( this ).children( '.jnum' ).first().text() );
@@ -87,6 +87,7 @@ function showJobs() {
 
 		return false;
 	} );
+	jQuery( '#jobslisting' ).on( 'dbclick', '.jline', function ( e ) { return false; } );
 
 	isShowingJobs = true;
 	updateShortcutButtons();
