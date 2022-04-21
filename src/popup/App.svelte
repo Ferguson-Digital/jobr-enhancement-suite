@@ -1,52 +1,52 @@
 <script>
     import browser from 'webextension-polyfill';
-    
-    let shortcutsJson;
-    
+
+    let settingsJson;
+
     let isValid = false;
-    let shortcutsParsed;
-    let shortcutsSaved;
-    
+    let settingsParsed;
+    let settingsSaved;
+
     function save() {
         if (!isValid) {
             alert('invalid JSON');
             return false;
         }
-        
-        browser.storage.sync.set({shortcuts: shortcutsParsed});
+
+        browser.storage.sync.set(settingsParsed);
         window.close();
     }
-    
+
     function cancel() {
         window.close();
     }
-    
-    // This block happens reactively, so that it will validate JSON on any changes to the shortcutsJson string
+
+    // This block happens reactively, so that it will validate JSON on any changes to the settingsJson string
     $: try {
-        shortcutsParsed = JSON.parse(shortcutsJson);
+        settingsParsed = JSON.parse(settingsJson);
+        settingsJson = JSON.stringify(settingsParsed, null, 2);
         isValid = true;
     } catch (e) {
-        shortcutsParsed = undefined;
+        settingsParsed = undefined;
         isValid = false;
     }
     
-    browser.storage.sync.get('shortcuts').then(({shortcuts}) => {
-        shortcutsSaved = shortcuts ?? {};
-        shortcutsJson = JSON.stringify(shortcuts, null, 2);
-    });
+    async function loadSettings() {
+        console.log('getting settings');
+        settingsSaved = await browser.storage.sync.get(null)
+        settingsJson = JSON.stringify(settingsSaved, null, 2);
+    }
     
-    browser.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName === 'sync' && typeof changes['shortcuts'] !== 'undefined') {
-            console.log('shortcuts changed', changes);
-            shortcutsSaved = changes['shortcuts'].newValue;
-            shortcutsJson = JSON.stringify(shortcutsSaved, null, 2);
-        }
+    loadSettings();
+
+    browser.storage.onChanged.addListener((_changes, areaName) => {
+        if (areaName === 'sync') loadSettings();
     });
 </script>
 
 <form on:submit|preventDefault={save}>
-    <textarea bind:value={shortcutsJson}></textarea>
-    
+    <textarea bind:value={settingsJson}></textarea>
+
     <div>
         <button disabled={!isValid} type="submit">Save</button>
         <button type="button" on:click={cancel}>Cancel</button>
@@ -56,6 +56,6 @@
 <style>
     textarea {
         width: 24rem;
-        height: 16rem;
+        height: 32rem;
     }
 </style>
