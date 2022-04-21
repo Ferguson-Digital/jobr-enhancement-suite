@@ -14,10 +14,6 @@ const defaultSettings = {
 		p: ''  // password
 	},
 	commonTasks: {
-		'453': 'Meeting',
-		'442': 'FrontEnd',
-		'443': 'BackEnd',
-		'407': 'ProjMgmt'
 	},
 	defaultDuration: '',
 	defaultTask: ''
@@ -25,26 +21,27 @@ const defaultSettings = {
 
 let settings;
 let useDefaultTask = true;
+let useTaskFilter = true;
 
 async function initSettings() {
 	settings = await browser.storage.sync.get(null);
-	
+
 	if ( !settings || Object.keys(settings).length == 0 ) {
-		console.log( 'setting default settings' );
+		// console.log( 'setting default settings' );
 		settings = {...defaultSettings};
 		browser.storage.sync.set( {...defaultSettings} );
 	}
 
-	console.log( settings );
+	// console.log( settings );
 	updateShortcutButtons();
 }
 
 initSettings();
 
 browser.storage.onChanged.addListener( ( changes, areaName ) => {
-	console.log({areaName});
+	// console.log({areaName});
 	if ( areaName === 'sync' ) {
-		console.log( 'j-p.js: settings changed', changes );
+		// console.log( 'j-p.js: settings changed', changes );
 		initSettings();
 	}
 } );
@@ -79,8 +76,8 @@ function showJobs() {
 	jQuery( ".infomain" ).html( jQuery( '#popup_window' ).html() );
 	jQuery( '#jobslisting' ).on( 'click', '.jline', function ( e ) {
 		e.preventDefault();
-		console.log( 'click' );
-		console.log( jQuery( this ).children( '.jnum' ).first().text() );
+		// console.log( 'click' );
+		// console.log( jQuery( this ).children( '.jnum' ).first().text() );
 		let jobNum = jQuery( this ).children( '.jnum' ).first().text();
 		selectJob( jobNum );
 
@@ -90,20 +87,20 @@ function showJobs() {
 
 	isShowingJobs = true;
 	updateShortcutButtons();
+
+	jQuery( '#timg' ).append('<button id="tfilter" class="but_ton quick" style="margin-left: 40px !important;">Toggle Filter</button>');
+
 	return false;
 }
 
 
 function filterTasks() {
+	if ( Object.keys(settings.commonTasks).length == 0 ) return;
+	if ( ! useTaskFilter ) return;
 	useDefaultTask = false;
-	// let taskElement = jQuery( '#tasklisting > .wrp' ).children( '.jline' ).children( '.tname' );
 	let taskElements = jQuery( '#tasklisting > .wrp .jline .tname' );
-	// const taskParentElement = jQuery( '#tasklisting > .wrp' ).children( '.jline' )
 
 	const taskList = Object.keys( settings.commonTasks );
-	// console.log( 'filterTasks: ', taskList );
-	// console.log( 'elements: ', taskElements );
-	// console.log( taskElements.length );
 
 	for ( var i = taskElements.length - 1; i >= 0; i-- )
 	{
@@ -111,11 +108,7 @@ function filterTasks() {
 
 		if ( !taskList.includes( taskElements[i].getAttribute( 'data' ) ) )
 		{
-			// 	console.log( taskParentElement[i] )
 			parentElement.remove();
-			// 	jQuery( this ).remove()
-			// 	jQuery( taskParentElement[i] ).remove();
-			// 	console.log( taskParentElement[i] )
 		}
 		else
 		{
@@ -126,24 +119,26 @@ function filterTasks() {
 		}
 	}
 
+	console.log( 'tasks filtered' );
+
 }
 
 function selectJob( jobNum ) {
-	setTimeout( filterTasks, 500 );
-
+	useTaskFilter = true;
 	jQuery( '#COST_JOB_NUM' ).val( jobNum );
 	/**
 	 * Took out `.val(.5)` from the line below because
 	 *  - More often than not it needs deleted and replaced with the correct time anyway
 	 *  - When editing an existing entry, it overwrites the time that was already entered
 	 */
+	// setTimeout( filterTasks, 500 );
 
 	if ( settings.defaultTask && useDefaultTask  ) {
-		console.log( 'using default task' );
+		// console.log( 'using default task' );
 		jQuery( '#COST_TASK' ).val( settings.defaultTask );
 	}
 	else if (!useDefaultTask) {
-		console.log( 'not using default task' );
+		// console.log( 'not using default task' );
 		jQuery( '#COST_TASK' ).val( ' ' );
 	}
 
@@ -159,12 +154,13 @@ function selectJob( jobNum ) {
 }
 
 function manual() {
+	useTaskFilter = true;
 	if ( jQuery( this ).data( 'task' ) ) jQuery( '#COST_TASK' ).val( jQuery( this ).data( 'task' ) );
 	jQuery( '#COST_JOB_NUM' ).val( jQuery( this ).data( 'code' ) );
 	jQuery( '#COST_HOURS' ).val( jQuery( this ).data( 'duration' ) );
 	jQuery( '#COST_NOTE' ).focus();
 	jQuery( '#timg' ).click();
-	setTimeout( filterTasks, 500 );
+	// setTimeout( filterTasks, 500 );
 	return false;
 }
 
@@ -173,8 +169,30 @@ jQuery( function ( $ ) {
 		setTimeout( showJobs, 100 );
 	} ).observe( jQuery( "#main" )[0], { childList: true } );
 
+	var taskObserver = new MutationObserver( function ( mutations ) {
+		// console.log( 'task observer' );
+		filterTasks();
+	} );
+
+	function addObserverIfTaskListAvailable() {
+		var taskList = jQuery( "#tasklisting" )[0];
+		if ( !taskList )
+		{
+			// The node we need does not exist yet.
+			// Wait 500ms and try again
+			window.setTimeout( addObserverIfTaskListAvailable, 500 );
+			return;
+		}
+
+		taskObserver.observe( jQuery( "#tasklisting > .wrp" )[0], { childList: true } );
+		// console.log( 'tasklisting observer added' );
+	}
+	addObserverIfTaskListAvailable(); // on initial load. After first job selection.
+
+
 	// added back in because I'm not as confident as James that we don't need a master reset back door. ;)
 	jQuery( 'body' ).on( 'click', '#prefs b', showJobs );
+	jQuery( 'body' ).on( 'click', '#tfilter', function () { useTaskFilter = ! useTaskFilter; jQuery( '#timg' ).click() } );
 
 	// Auto-login
 	setTimeout( function () {
