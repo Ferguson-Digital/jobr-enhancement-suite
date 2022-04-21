@@ -18,7 +18,7 @@ export default ({browserTarget, version}) => ({
         }
     ],
     
-    page_action: browserTarget === 'chrome' ? undefined : {
+    page_action: browserTarget === 'firefox' ? {
         default_icon: {
             "19": "icons/icon-19.png",
             "38": "icons/icon-38.png"
@@ -26,7 +26,7 @@ export default ({browserTarget, version}) => ({
         default_title: "Jobr Plus",
         default_popup: "popup/index.html",
         show_matches: ["*://*.jobr.mobi/*"]
-    },
+    } : undefined,
     
     action: browserTarget === 'chrome' ? {
         default_icon: {
@@ -38,11 +38,11 @@ export default ({browserTarget, version}) => ({
         default_popup: "popup/index.html"
     } : undefined,
     
-    browser_specific_settings: browserTarget === 'chrome' ? undefined : {
+    browser_specific_settings: browserTarget === 'firefox' ? {
         gecko: {
             id: "{25383326-edd8-4cd0-9fa2-491eced1680e}",
             strict_min_version: "42.0"
         }
-    }
+    } : undefined
 });
   
