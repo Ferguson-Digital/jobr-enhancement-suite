@@ -13,7 +13,7 @@
             return false;
         }
 
-        browser.storage.sync.set({settings: settingsParsed});
+        browser.storage.sync.set(settingsParsed);
         window.close();
     }
 
@@ -30,18 +30,17 @@
         settingsParsed = undefined;
         isValid = false;
     }
+    
+    async function loadSettings() {
+        console.log('getting settings');
+        settingsSaved = await browser.storage.sync.get(null)
+        settingsJson = JSON.stringify(settingsSaved, null, 2);
+    }
+    
+    loadSettings();
 
-    browser.storage.sync.get('settings').then(({settings}) => {
-        settingsSaved = settings ?? {};
-        settingsJson = JSON.stringify(settings, null, 2);
-    });
-
-    browser.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName === 'sync' && typeof changes['settings'] !== 'undefined') {
-            console.log('a.sv: settings changed', changes);
-            settingsSaved = changes['settings'].newValue;
-            settingsJson = JSON.stringify(settingsSaved, null, 2);
-        }
+    browser.storage.onChanged.addListener((_changes, areaName) => {
+        if (areaName === 'sync') loadSettings();
     });
 </script>
 
