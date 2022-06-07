@@ -50,7 +50,7 @@ function updateShortcutButtons() {
 	if ( !isShowingJobs ) return;
 
 	var quick_text = '<div id="manual-links">';
-	for ( var i = 0; i < settings.shortcuts.length; i++ )
+	for ( var i = 0; i < settings?.shortcuts?.length; i++ )
 	{
 		var e = settings.shortcuts[i];
 		quick_text += '<a href="#" data-code="' + e.job + '"';
@@ -72,30 +72,11 @@ function updateShortcutButtons() {
 
 let isShowingJobs = false;
 
-function showJobs() {
-	jQuery( ".infomain" ).html( jQuery( '#popup_window' ).html() );
-	jQuery( '#jobslisting' ).on( 'click', '.jline', function ( e ) {
-		e.preventDefault();
-		// console.log( 'click' );
-		// console.log( jQuery( this ).children( '.jnum' ).first().text() );
-		let jobNum = jQuery( this ).children( '.jnum' ).first().text();
-		selectJob( jobNum );
 
-		return false;
-	} );
-	jQuery( '#jobslisting' ).on( 'dbclick', '.jline', function ( e ) { return false; } );
-
-	isShowingJobs = true;
-	updateShortcutButtons();
-
-	jQuery( '#timg' ).append('<button id="tfilter" class="but_ton quick" style="margin-left: 40px !important;">Toggle Filter</button>');
-
-	return false;
-}
 
 
 function filterTasks() {
-	if ( Object.keys(settings.commonTasks).length == 0 ) return;
+	if ( Object.keys(settings?.commonTasks).length == 0 ) return;
 	if ( ! useTaskFilter ) return;
 	useDefaultTask = false;
 	let taskElements = jQuery( '#tasklisting > .wrp .jline .tname' );
@@ -132,23 +113,25 @@ function selectJob( jobNum ) {
 	 *  - When editing an existing entry, it overwrites the time that was already entered
 	 */
 	// setTimeout( filterTasks, 500 );
-
-	if ( settings.defaultTask && useDefaultTask  ) {
-		// console.log( 'using default task' );
-		jQuery( '#COST_TASK' ).val( settings.defaultTask );
-	}
-	else if (!useDefaultTask) {
-		// console.log( 'not using default task' );
-		jQuery( '#COST_TASK' ).val( ' ' );
+	if ( !jQuery( '#COST_TASK' ).val() ){
+		if ( settings.defaultTask && useDefaultTask  ) {
+			// console.log( 'using default task' );
+			jQuery( '#COST_TASK' ).val( settings.defaultTask );
+		}
 	}
 
-	if ( settings.defaultDuration && !jQuery( '#COST_HOURS' ).val()) {
-		jQuery( '#COST_HOURS' ).val( settings.defaultDuration );
+	if ( !jQuery( '#COST_HOURS' ).val() ) {
+		if ( settings.defaultDuration ) {
+			jQuery( '#COST_HOURS' ).val( settings.defaultDuration );
+			jQuery( '#COST_NOTE' ).focus();
+		}
+		else
+		{
+			jQuery( '#COST_HOURS' ).focus();
+		}
+	}
+	else {
 		jQuery( '#COST_NOTE' ).focus();
-	}
-	else
-	{
-		jQuery( '#COST_HOURS' ).focus();
 	}
 	jQuery( '#timg' ).click();
 }
@@ -157,10 +140,54 @@ function manual() {
 	useTaskFilter = true;
 	if ( jQuery( this ).data( 'task' ) ) jQuery( '#COST_TASK' ).val( jQuery( this ).data( 'task' ) );
 	jQuery( '#COST_JOB_NUM' ).val( jQuery( this ).data( 'code' ) );
-	jQuery( '#COST_HOURS' ).val( jQuery( this ).data( 'duration' ) );
+	if ( !jQuery( '#COST_HOURS' ).val() ){
+		jQuery( '#COST_HOURS' ).val( jQuery( this ).data( 'duration' ) ?? settings.defaultDuration);
+	}
 	jQuery( '#COST_NOTE' ).focus();
 	jQuery( '#timg' ).click();
-	// setTimeout( filterTasks, 500 );
+	return false;
+}
+
+var taskObserver = new MutationObserver( function ( mutations ) {
+	// console.log( 'task observer' );
+	// filterTasks();
+	setTimeout( filterTasks, 100 );
+} );
+
+function addObserverIfTaskListAvailable() {
+	var taskList = jQuery( "#tasklisting" )[0];
+	if ( !taskList )
+	{
+		// The node we need does not exist yet.
+		// Wait 500ms and try again
+		window.setTimeout( addObserverIfTaskListAvailable, 500 );
+		return;
+	}
+
+	taskObserver.observe( jQuery( "#tasklisting > .wrp" )[0], { childList: true } );
+	// console.log( 'tasklisting observer added' );
+}
+
+function showJobs() {
+	jQuery( ".infomain" ).html( jQuery( '#popup_window' ).html() );
+	jQuery( '#jobslisting' ).on( 'click', '.jline', function ( e ) {
+		e.preventDefault();
+		// console.log( 'click' );
+		// console.log( jQuery( this ).children( '.jnum' ).first().text() );
+		let jobNum = jQuery( this ).children( '.jnum' ).first().text();
+		selectJob( jobNum );
+
+		return false;
+	} );
+	jQuery( '#jobslisting' ).on( 'dbclick', '.jline', function ( e ) { return false; } );
+
+	isShowingJobs = true;
+	updateShortcutButtons();
+
+	if ( !jQuery( '#timg #tfilter' ).length ) {
+		jQuery( '#timg' ).append('<button id="tfilter" class="but_ton quick" style="margin-left: 40px !important;">Toggle Filter</button>');
+	}
+	addObserverIfTaskListAvailable(); // on initial load. After first job selection.
 	return false;
 }
 
@@ -169,25 +196,6 @@ jQuery( function ( $ ) {
 		setTimeout( showJobs, 100 );
 	} ).observe( jQuery( "#main" )[0], { childList: true } );
 
-	var taskObserver = new MutationObserver( function ( mutations ) {
-		// console.log( 'task observer' );
-		filterTasks();
-	} );
-
-	function addObserverIfTaskListAvailable() {
-		var taskList = jQuery( "#tasklisting" )[0];
-		if ( !taskList )
-		{
-			// The node we need does not exist yet.
-			// Wait 500ms and try again
-			window.setTimeout( addObserverIfTaskListAvailable, 500 );
-			return;
-		}
-
-		taskObserver.observe( jQuery( "#tasklisting > .wrp" )[0], { childList: true } );
-		// console.log( 'tasklisting observer added' );
-	}
-	addObserverIfTaskListAvailable(); // on initial load. After first job selection.
 
 
 	// added back in because I'm not as confident as James that we don't need a master reset back door. ;)
