@@ -18,7 +18,6 @@
   "dependencies": {
     "fs-extra": "^10.1.0",
     "jquery": "^3.6.0",
-    "node-fs-extra": "^0.8.2",
     "webextension-polyfill": "^0.8.0"
   }
 }
