@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import fs from 'fs-extra';
 import esbuild from 'esbuild';
 import sveltePlugin from 'esbuild-svelte';
 import createManifest from '../manifest.js';
@@ -30,7 +30,7 @@ async function build(browserTarget) {
     });
 
     await fs.writeFile(`./${outdir}/manifest.json`, JSON.stringify(manifest));
-    await fs.cp('icons', outdir + '/icons', { recursive: true });
+    await fs.copy('icons', outdir + '/icons', { recursive: true });
     await fs.copyFile('src/popup/index.html', outdir + '/popup/index.html');
 }
 

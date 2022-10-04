@@ -30,18 +30,18 @@
         settingsParsed = undefined;
         isValid = false;
     }
-    
+
     async function loadSettings() {
         console.log('getting settings');
         settingsSaved = await browser.storage.sync.get(null)
         settingsJson = JSON.stringify(settingsSaved, null, 2);
     }
-    
+
     loadSettings();
 
-    browser.storage.onChanged.addListener((_changes, areaName) => {
-        if (areaName === 'sync') loadSettings();
-    });
+//    browser.storage.onChanged.addListener((_changes, areaName) => {
+//       if (areaName === 'sync') loadSettings();
+//    });
 </script>
 
 <form on:submit|preventDefault={save}>
